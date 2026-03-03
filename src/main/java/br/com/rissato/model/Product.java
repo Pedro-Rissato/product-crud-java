@@ -5,8 +5,8 @@ import java.math.RoundingMode;
 
 public class Product {
 
-    private String name;
-    private Long id;
+    final private String name;
+    final private Long id;
     private BigDecimal price;
     private Integer stock;
     private String description;
