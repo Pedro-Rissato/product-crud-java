@@ -15,7 +15,7 @@ This project implements a `Product` entity with:
 
 ## ⚙️ Technologies
 
-- Java 17+
+- Java 21 (LTS)
 - Maven
 - BigDecimal for monetary calculations
 
