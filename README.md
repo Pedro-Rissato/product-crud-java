@@ -29,7 +29,7 @@ This project implements a `Product` entity with:
 
 ## 📁 Structure
 
-src/main/java/br/com/rissato/model/Produto.java
+src/main/java/br/com/rissato/model/Product.java
 
 ## 🚀 Future Improvements
 
