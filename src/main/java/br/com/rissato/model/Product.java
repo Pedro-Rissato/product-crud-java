@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 public class Product {
 
-    final private String name;
+    private String name;
     final private Long id;
     private BigDecimal price;
     private Integer stock;
@@ -51,31 +51,12 @@ public class Product {
     }
 
     // Setters
+    public void setPrice(BigDecimal price) { this.price = price; }
+    public void setName(String name){this.name =name;}
     public void setDescription(String description) {
         this.description = description;
     }
-    public void increaseStock(int quantity) {
-        if (quantity <= 0 ) {
-            throw new IllegalArgumentException("The quantity must be greater than zero.");
-        }
-        if (this.stock == null) {
-            this.stock = 0;
-        }
-        this.stock += quantity;
-    }
-
-    public void decreaseStock(int quantity) {
-        if(!hasStockControl()){
-            throw new IllegalArgumentException("The stock control has not been set.");
-        }
-        if (quantity < 0 ) {
-            throw new IllegalArgumentException("The stock cannot be negative.");
-        }
-        if (quantity > this.stock ) {
-            throw new IllegalArgumentException("The quantity must be less than stock.");
-        }
-        this.stock -= quantity;
-    }
+    public void setStock(int quantity) {this.stock = quantity;}
 
     public void adjustPrice(BigDecimal price) {
         if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
@@ -84,11 +65,6 @@ public class Product {
         this.price = price;
     }
     public void setDiscountPercentage(BigDecimal discountPercentage) {
-        if (discountPercentage == null ||
-                discountPercentage.compareTo(BigDecimal.ZERO) < 0 ||
-                discountPercentage.compareTo(BigDecimal.valueOf(100)) >= 0) {
-            throw new IllegalArgumentException("The discount percentage must be between 0 and 100.");
-        }
         this.discountPercentage = discountPercentage;
     }
     public BigDecimal getFinalPrice() {
@@ -99,10 +75,6 @@ public class Product {
         return price.subtract(discount)
                 .setScale(2, RoundingMode.HALF_UP);
 
-    }
-    //StockControl
-    public boolean hasStockControl() {
-        return stock != null;
     }
 
     @Override
