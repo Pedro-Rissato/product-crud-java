@@ -67,15 +67,7 @@ public class Product {
     public void setDiscountPercentage(BigDecimal discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
-    public BigDecimal getFinalPrice() {
-        BigDecimal discount = price
-                .multiply(discountPercentage)
-                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
-        return price.subtract(discount)
-                .setScale(2, RoundingMode.HALF_UP);
-
-    }
 
     @Override
     public boolean equals(Object o) {
