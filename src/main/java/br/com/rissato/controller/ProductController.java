@@ -3,6 +3,7 @@ package br.com.rissato.controller;
 import br.com.rissato.model.Product;
 import br.com.rissato.service.ProductService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductController {
@@ -28,7 +29,9 @@ public class ProductController {
     public void updateStock(Long id, Integer quantity) {
         this.productService.updateStock(id, quantity);
     }
-    public void updateProductPrice(Long id, Double price) {
-        this.productService.update
-    }
+    public void updateProductPrice(Long id, BigDecimal price) {this.productService.adjustPrice(id,price);}
+    public BigDecimal getProductFinalPrice(Long id) {return this.productService.getFinalPrice(id);}
+    public void updateDiscount(Long id, BigDecimal discount) {this.productService.updateDiscount(id,discount);}
+    public void updateDiscription(Long id, String description){this.productService.adjustDescription(id,description);}
+    public void updateName(Long id, String name){this.productService.adjustName(id,name);}
 }
