@@ -94,7 +94,7 @@ public class Product {
     }
     @Override
     public String toString(){
-        return id + " | " + name + " | " + price + " | " + stock + " | " + description + " | " + discountPercentage + "%";
+        return "ID: " + id + " | Name: " + name + " | Price: " + price + " | Stock: " + stock + " | Description: " + description + " | Discount Percentage: " + discountPercentage + "%";
     }
 
 
