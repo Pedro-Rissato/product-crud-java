@@ -85,7 +85,8 @@ public class ProductView {
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
         BigDecimal price = productController.getProductFinalPrice(id);
-        System.out.println("Final price: " + price);
+        Product product = productController.getProductById(id);
+        System.out.println(product.getName() + " Final price" + price);
     }
     //update
     public void updateProduct() throws IOException {
