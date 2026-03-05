@@ -1,19 +1,18 @@
 package br.com.rissato.view;
 import br.com.rissato.controller.ProductController;
 import br.com.rissato.model.Product;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 public class ProductView {
-    private ProductController productController;
+    private final ProductController productController;
     public ProductView(ProductController productController) {
         this.productController = productController;
     }
+    private final Scanner sc = new Scanner(System.in);
     //create
-    public void createProduct(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the product ID: ");
-        Long id = sc.nextLong();
-        sc.nextLine();
+    public void createProduct() throws IOException {
         System.out.println("Enter the product name: ");
         String name = sc.nextLine();
         System.out.println("Enter the product price: ");
@@ -23,48 +22,73 @@ public class ProductView {
         sc.nextLine();
         System.out.println("Enter the product description: ");
         String description = sc.nextLine();
-        Product product = new Product(name, id ,price,quantity,description);
+        Product product = new Product(name, null ,price,quantity,description);
         productController.createProduct(product);
+
+        System.out.println("Product created successfully! " + product);
     }
-    //showall
+    //showAll
     public void showProducts() {
-        Scanner sc = new Scanner(System.in);
-        int option = sc.nextInt();
+        int option;
 
         do {
+            separator();
             System.out.println("Choose an option: ");
             System.out.println("1. Show all products");
             System.out.println("2. Show product by id");
+            System.out.println("3. Show product final price by id");
             System.out.println("0. Exit");
 
+            option = sc.nextInt();
             switch(option){
                 case 1:
+                    separator();
                     showAllProducts();
                     break;
                 case 2:
+                    separator();
                     showProductById();
                     break;
-
-
+                case 3:
+                    separator();
+                    showProductFinalPrice();
+                    break;
+                default:
+                    System.out.println("Invalid option.");
             }
         }while (option != 0);
 
     }
-    public List<Product> showAllProducts(){
-        return productController.getAllProducts();
+    public void showAllProducts(){
+        List<Product> products = productController.getAllProducts();
+
+        if(products.isEmpty()){
+            System.out.println("No products found.");
+            return;
+        }
+
+        for(Product p : products){
+            System.out.println(p);
+        }
     }
-    //showbyid
-    public Product showProductById(){
-        Scanner sc = new Scanner(System.in);
+    //showById
+    public void showProductById(){
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
-        return productController.getProductById(id);
+        Product product = productController.getProductById(id);
+        System.out.println(product);
+    }
+    public void showProductFinalPrice(){
+        System.out.println("Enter the product ID: ");
+        Long id = sc.nextLong();
+        BigDecimal price = productController.getProductFinalPrice(id);
+        System.out.println("Final price: " + price);
     }
     //update
-    public void updateProduct(){
-        Scanner sc = new Scanner(System.in);
+    public void updateProduct() throws IOException {
         int option;
         do{
+            separator();
             System.out.println("Choose an option: ");
             System.out.println("1. Update product");
             System.out.println("2. Update stock");
@@ -76,6 +100,7 @@ public class ProductView {
             option = sc.nextInt();
             switch (option){
                 case 1:
+                    separator();
                     System.out.println("Enter the product ID: ");
                     Long id = sc.nextLong();
                     sc.nextLine();
@@ -90,56 +115,73 @@ public class ProductView {
                     String description = sc.nextLine();
                     Product product = new Product(name, id ,price,quantity,description);
                     productController.updateProduct(product);
+                    System.out.println("Product updated successfully! " + productController.getProductById(id));
+                    break;
                 case 2:
+                    separator();
                     System.out.println("Enter the product ID: ");
                     Long id2 = sc.nextLong();
                     System.out.println("Enter the amount: ");
                     Integer amount = sc.nextInt();
                     productController.updateStock(id2,amount);
+                    System.out.println("Product updated successfully! " + productController.getProductById(id2));
+                    break;
                 case 3:
+                    separator();
                     System.out.println("Enter the product ID: ");
                     Long id3 = sc.nextLong();
                     System.out.println("Enter the product new price: ");
                     BigDecimal newPrice = sc.nextBigDecimal();
                     productController.updateProductPrice(id3,newPrice);
+                    System.out.println("Product updated successfully! " + productController.getProductById(id3));
+                    break;
                 case 4:
+                    separator();
                     System.out.println("Enter the product ID: ");
                     Long id4 = sc.nextLong();
                     System.out.println("Enter the product discount: ");
                     BigDecimal newDiscount = sc.nextBigDecimal();
                     productController.updateDiscount(id4,newDiscount);
+                    System.out.println("Product updated successfully! " + productController.getProductById(id4));
+                    break;
                 case 5:
+                    separator();
                     System.out.println("Enter the product ID: ");
                     Long id5 = sc.nextLong();
+                    sc.nextLine();
                     System.out.println("Enter the product name: ");
                     String newName = sc.nextLine();
                     productController.updateName(id5,newName);
+                    System.out.println("Product updated successfully! " + productController.getProductById(id5));
+                    break;
                 case 6:
+                    separator();
                     System.out.println("Enter the product ID: ");
                     Long id6 = sc.nextLong();
+                    sc.nextLine();
                     System.out.println("Enter the product description: ");
                     String newDescription = sc.nextLine();
-                    productController.updateDiscription(id6,newDescription);
+                    productController.updateDescription(id6,newDescription);
+                    System.out.println("Product updated successfully! " + productController.getProductById(id6));
+                    break;
+                default:
+                    System.out.println("Invalid option.");
             }
         }while(option!=0);
 
     }
     //delete
-    public void deleteProductById(){
-        Scanner sc = new Scanner(System.in);
+    public void deleteProductById() throws IOException {
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
         productController.deleteById(id);
+        System.out.println("Product deleted successfully!");
     }
-
-
-
-
-    public void start (){
-        Scanner sc = new Scanner(System.in);
+    public void start () throws IOException {
         int option;
 
         do{
+            separator();
             System.out.println("Choose an option");
             System.out.println("1 - Create Product");
             System.out.println("2 - Show Products");
@@ -149,19 +191,29 @@ public class ProductView {
             option = sc.nextInt();
             switch (option){
                 case 1:
+                    separator();
                     createProduct();
                     break;
                 case 2:
-                    showAllProducts();
+                    separator();
+                    showProducts();
                     break;
                 case 3:
+                    separator();
                     updateProduct();
                     break;
                 case 4:
+                    separator();
                     deleteProductById();
+                    break;
+                default:
+                    separator();
+                    System.out.println("Invalid option.");
             }
 
         }while(option!=0);
     }
-
+    public void separator(){
+        System.out.println("--------------------------------");
+    }
 }

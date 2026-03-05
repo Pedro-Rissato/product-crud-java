@@ -1,12 +1,11 @@
 package br.com.rissato.model;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class Product {
 
     private String name;
-    final private Long id;
+    private Long id;
     private BigDecimal price;
     private Integer stock;
     private String description;
@@ -14,20 +13,23 @@ public class Product {
 
     // Construtores
     public Product(String name, Long id, BigDecimal price, Integer stock, String description) {
-        if(price==null || price.compareTo(BigDecimal.ZERO)<=0) {
-            throw new IllegalArgumentException("Price must be greater than zero");
-        }
-        if(stock != null && stock< 0) {
-            throw new IllegalArgumentException("Stock cannot be negative");
-        }
         this.name = name;
         this.id = id;
-        this.price = price;
-        this.stock = stock;
+        setPrice(price);
+        setStock(stock);
         this.description = description;
     }
     public Product(String name, Long id, BigDecimal price, Integer stock) {
         this(name, id, price, stock, null);
+    }
+
+    public Product(Long id, String name, BigDecimal price, Integer stock, String description, BigDecimal discountPercentage) {
+        this.id = id;
+        this.name = name;
+        setPrice(price);
+        setStock(stock);
+        this.description = description;
+        this.discountPercentage = discountPercentage;
     }
 
     //Getters
@@ -51,19 +53,24 @@ public class Product {
     }
 
     // Setters
-    public void setPrice(BigDecimal price) { this.price = price; }
+    public void setPrice(BigDecimal price) {
+        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
+        throw new IllegalArgumentException("The price must be greater than zero.");
+    }
+        this.price = price; }
     public void setName(String name){this.name =name;}
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setStock(int quantity) {this.stock = quantity;}
-
-    public void adjustPrice(BigDecimal price) {
-        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("The price must be greater than zero.");
+    public void setStock(Integer quantity) {
+        if(quantity != null && quantity < 0){
+            throw new IllegalArgumentException("Stock cannot be negative");
         }
-        this.price = price;
+        this.stock = quantity;
     }
+    public void setId(Long id){this.id = id;}
+
+
     public void setDiscountPercentage(BigDecimal discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
@@ -74,11 +81,21 @@ public class Product {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
-        return id.equals(product.id);
+        return java.util.Objects.equals(id, product.id);
 
     }
     @Override
     public int hashCode() {
-        return id.hashCode(id);
+        return java.util.Objects.hash(id);
     }
+
+    public String toFileString(){
+        return id + "|" + name + "|" + price + "|" + stock + "|" + description + "|" + discountPercentage;
+    }
+    @Override
+    public String toString(){
+        return id + "|" + name + "|" + price + "|" + stock + "|" + description + "|" + discountPercentage + "%";
+    }
+
+
 }

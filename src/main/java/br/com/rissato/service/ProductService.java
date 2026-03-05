@@ -3,95 +3,115 @@ package br.com.rissato.service;
 import br.com.rissato.model.Product;
 import br.com.rissato.repository.ProductRepository;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
+import java.util.*;
 
 public class ProductService {
-    private ProductRepository repository;
+    private final ProductRepository repository;
 
     public ProductService(ProductRepository repository) {
         this.repository = repository;
     }
-    public void createProduct(Product product) {
-        if (product.getId() == null) {
-            throw new IllegalArgumentException("ID inválido");
+    public void createProduct(Product product) throws IOException {
+        if(product.getId() != null){
+            throw new IllegalArgumentException("New product cannot have an id");
         }
-        this.repository.save(product);
+        repository.save(product);
     }
+
     public List<Product> getAllProducts() {
-        List<Product> products = this.repository.findAll();
-        return products;
+        return repository.findAll();
     }
     public Product getProductById(Long id) {
-        return repository.findById(id);
+        return getExistingProduct(id);
     }
-    public void updateProduct(Product product) {
-        this.repository.updateProduct(product);
-    }
-    public void deleteById(Long id) {
-        this.repository.deleteById(id);
-    }
-    public void updateStock(Long id, Integer quantity){
-        Product exists = repository.findById(id);
-        if(exists!=null){
-            exists.setStock(quantity);
-            if(exists.getStock()+ quantity<0){
-                throw new IllegalArgumentException("The stock cannot be negative.");
-            }
-            exists.setStock(exists.getStock()+ quantity);
+    public void updateProduct(Product updatedProduct) throws IOException {
+        if(updatedProduct.getId() == null){
+            throw new NoSuchElementException("Product id cannot be null");
         }
+        getExistingProduct((updatedProduct.getId()));
+        repository.update(updatedProduct);
+
+
+    }
+    public void deleteById(Long id) throws IOException {
+        getExistingProduct(id);
+        repository.deleteById(id);
+
+    }
+    public void updateStock(Long id, Integer quantity) throws IOException {
+        if (quantity == null || quantity == 0) {
+            throw new IllegalArgumentException("Quantity cannot be null or zero");
+        }
+        Product exists = getExistingProduct(id);
+        Integer newStock = exists.getStock() + quantity;
+        if(newStock<0){
+            throw new IllegalArgumentException("The stock cannot be negative.");
+        }
+            exists.setStock(newStock);
+            repository.update(exists);
+
     }
 
-    public void updateDiscount(Long id, BigDecimal discount) {
-        Product exists = repository.findById(id);
-        if(exists!=null){
-            if (discount == null ||
-                    discount.compareTo(BigDecimal.ZERO) < 0 ||
-                    discount.compareTo(BigDecimal.valueOf(100)) >= 0 ||
-            discount.compareTo(BigDecimal.valueOf(100)) > 0) {
-                throw new IllegalArgumentException("The discount percentage needs to be between 0.0 and 100.");
-            }
-            exists.setDiscountPercentage(discount);
+    public void updateDiscount(Long id, BigDecimal discount) throws IOException {
+        Product exists = getExistingProduct(id);
+        if (discount == null ||
+                discount.compareTo(BigDecimal.ZERO) < 0 ||
+                discount.compareTo(BigDecimal.valueOf(100)) >= 0) {
+            throw new IllegalArgumentException("The discount percentage needs to be between 0.0 and 100.");
         }
+        exists.setDiscountPercentage(discount);
+        repository.update(exists);
+
     }
     public BigDecimal getFinalPrice(Long id) {
-        Product exists = repository.findById(id);
-        if(exists!=null){
-            BigDecimal discountPercentage = exists.getDiscountPercentage();
-            BigDecimal price = exists.getPrice();
-            BigDecimal discount = price
-                    .multiply(discountPercentage)
-                    .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-
-            return price.subtract(discount)
-                    .setScale(2, RoundingMode.HALF_UP);
+        Product exists = getExistingProduct(id);
+        BigDecimal discountPercentage = exists.getDiscountPercentage();
+        if(discountPercentage==null || discountPercentage.compareTo(BigDecimal.ZERO)<=0){
+            return exists.getPrice();
         }
-        return exists.getPrice();
+        BigDecimal price = exists.getPrice();
+        BigDecimal discount = price
+                .multiply(discountPercentage)
+                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+
+        return price.subtract(discount)
+                .setScale(2, RoundingMode.HALF_UP);
+
 
 
     }
-    public void adjustPrice(Long id, BigDecimal price) {
-        if(price.compareTo(BigDecimal.ZERO) <= 0){
-            throw new IllegalArgumentException("The price cannot be less than 0.");
+    public void adjustPrice(Long id, BigDecimal price) throws IOException {
+        if(price == null || price.compareTo(BigDecimal.ZERO) <= 0 ){
+            throw new IllegalArgumentException("The price cannot be null or less/equal to 0.");
         }
-        Product exists = repository.findById(id);
-        if(exists!=null){
-            exists.setPrice(price);
-
-        }
+        Product exists = getExistingProduct(id);
+        exists.setPrice(price);
+        repository.update(exists);
     }
-    public void adjustDescription(Long id, String description) {
-        Product exists = repository.findById(id);
-        if(exists!=null){
-            exists.setDescription(description);
+    public void adjustDescription(Long id, String description) throws IOException {
+        if(description == null || description.isBlank()){
+            throw new IllegalArgumentException("Description cannot be null or blank");
         }
+        Product exists = getExistingProduct(id);
+        exists.setDescription(description);
+        repository.update(exists);
     }
-    public void adjustName(Long id, String name){
-        Product exists = repository.findById(id);
-        if(exists!=null){
-            exists.setName(name);
+    public void adjustName(Long id, String name) throws IOException {
+        if(name == null || name.isBlank()){
+            throw new IllegalArgumentException("The name cannot be null or blank");
         }
+        Product exists = getExistingProduct(id);
+        exists.setName(name);
+        repository.update(exists);
     }
-
+    private Product getExistingProduct(Long id) {
+        Product product = repository.findById(id);
+        if(product == null){
+            throw new NoSuchElementException("Product not found with id: " + id);
+        }
+        return product;
+    }
 }
