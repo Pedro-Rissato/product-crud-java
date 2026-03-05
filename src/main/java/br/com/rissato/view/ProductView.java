@@ -13,6 +13,7 @@ public class ProductView {
     private final Scanner sc = new Scanner(System.in);
     //create
     public void createProduct() throws IOException {
+        sc.nextLine();
         System.out.println("Enter the product name: ");
         String name = sc.nextLine();
         System.out.println("Enter the product price: ");
@@ -73,12 +74,14 @@ public class ProductView {
     }
     //showById
     public void showProductById(){
+        sc.nextLine();
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
         Product product = productController.getProductById(id);
         System.out.println(product);
     }
     public void showProductFinalPrice(){
+        sc.nextLine();
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
         BigDecimal price = productController.getProductFinalPrice(id);
@@ -89,6 +92,7 @@ public class ProductView {
         int option;
         do{
             separator();
+            sc.nextLine();
             System.out.println("Choose an option: ");
             System.out.println("1. Update product");
             System.out.println("2. Update stock");
@@ -172,6 +176,7 @@ public class ProductView {
     }
     //delete
     public void deleteProductById() throws IOException {
+        sc.nextLine();
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
         productController.deleteById(id);
