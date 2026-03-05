@@ -90,11 +90,11 @@ public class Product {
     }
 
     public String toFileString(){
-        return id + "|" + name + "|" + price + "|" + stock + "|" + description + "|" + discountPercentage;
+        return id + " | " + name + " | " + price + " | " + stock + " | " + description + " | " + discountPercentage;
     }
     @Override
     public String toString(){
-        return id + "|" + name + "|" + price + "|" + stock + "|" + description + "|" + discountPercentage + "%";
+        return id + " | " + name + " | " + price + " | " + stock + " | " + description + " | " + discountPercentage + "%";
     }
 
 
