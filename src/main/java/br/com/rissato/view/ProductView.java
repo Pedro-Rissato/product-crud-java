@@ -2,7 +2,7 @@ package br.com.rissato.view;
 import br.com.rissato.controller.ProductController;
 import br.com.rissato.model.Product;
 
-import java.io.IOException;
+
 import java.math.BigDecimal;
 import java.util.*;
 public class ProductView {
@@ -11,8 +11,8 @@ public class ProductView {
         this.productController = productController;
     }
     private final Scanner sc = new Scanner(System.in);
-    //create
-    public void createProduct() throws IOException {
+
+    public void createProduct() throws Exception {
         sc.nextLine();
         System.out.println("Enter the product name: ");
         String name = sc.nextLine();
@@ -28,8 +28,8 @@ public class ProductView {
 
         System.out.println("Product created successfully! " + product);
     }
-    //showAll
-    public void showProducts() {
+
+    public void showProducts() throws Exception {
         int option;
 
         do {
@@ -60,7 +60,7 @@ public class ProductView {
         }while (option != 0);
 
     }
-    public void showAllProducts(){
+    public void showAllProducts() throws Exception {
         List<Product> products = productController.getAllProducts();
 
         if(products.isEmpty()){
@@ -72,15 +72,15 @@ public class ProductView {
             System.out.println(p);
         }
     }
-    //showById
-    public void showProductById(){
+
+    public void showProductById() throws Exception {
         sc.nextLine();
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
         Product product = productController.getProductById(id);
         System.out.println(product);
     }
-    public void showProductFinalPrice(){
+    public void showProductFinalPrice() throws Exception {
         sc.nextLine();
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
@@ -88,8 +88,8 @@ public class ProductView {
         Product product = productController.getProductById(id);
         System.out.println(product.getName() + " Final price" + price);
     }
-    //update
-    public void updateProduct() throws IOException {
+
+    public void updateProduct() throws Exception {
         int option;
         do{
             separator();
@@ -175,15 +175,15 @@ public class ProductView {
         }while(option!=0);
 
     }
-    //delete
-    public void deleteProductById() throws IOException {
+
+    public void deleteProductById() throws Exception {
         sc.nextLine();
         System.out.println("Enter the product ID: ");
         Long id = sc.nextLong();
         productController.deleteById(id);
         System.out.println("Product deleted successfully!");
     }
-    public void start () throws IOException {
+    public void start () throws Exception {
         int option;
 
         do{

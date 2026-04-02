@@ -5,10 +5,10 @@ import br.com.rissato.repository.ProductRepository;
 import br.com.rissato.service.ProductService;
 import br.com.rissato.view.ProductView;
 
-import java.io.IOException;
+
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+     static void main(String[] args) throws Exception {
         ProductRepository productRepository = new ProductRepository();
         ProductService productService = new ProductService(productRepository);
         ProductController productController = new ProductController(productService);

@@ -3,7 +3,7 @@ package br.com.rissato.controller;
 import br.com.rissato.model.Product;
 import br.com.rissato.service.ProductService;
 
-import java.io.IOException;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -12,27 +12,27 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-    public void createProduct(Product product) throws IOException {
+    public void createProduct(Product product) throws Exception {
         this.productService.createProduct(product);
     }
-    public Product getProductById(Long id) {
+    public Product getProductById(Long id) throws Exception {
         return this.productService.getProductById(id);
     }
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts() throws Exception {
         return this.productService.getAllProducts();
     }
-    public void updateProduct(Product product) throws IOException {
+    public void updateProduct(Product product) throws Exception {
         this.productService.updateProduct(product);
     }
-    public void deleteById(Long id) throws IOException {
+    public void deleteById(Long id) throws Exception {
         this.productService.deleteById(id);
     }
-    public void updateStock(Long id, Integer quantity) throws IOException {
+    public void updateStock(Long id, Integer quantity) throws Exception {
         this.productService.updateStock(id, quantity);
     }
-    public void updateProductPrice(Long id, BigDecimal price) throws IOException {this.productService.adjustPrice(id,price);}
-    public BigDecimal getProductFinalPrice(Long id) {return this.productService.getFinalPrice(id);}
-    public void updateDiscount(Long id, BigDecimal discount) throws IOException {this.productService.updateDiscount(id,discount);}
-    public void updateDescription(Long id, String description) throws IOException {this.productService.adjustDescription(id,description);}
-    public void updateName(Long id, String name) throws IOException {this.productService.adjustName(id,name);}
+    public void updateProductPrice(Long id, BigDecimal price) throws Exception {this.productService.adjustPrice(id,price);}
+    public BigDecimal getProductFinalPrice(Long id) throws Exception {return this.productService.getFinalPrice(id);}
+    public void updateDiscount(Long id, BigDecimal discount) throws Exception {this.productService.updateDiscount(id,discount);}
+    public void updateDescription(Long id, String description) throws Exception {this.productService.adjustDescription(id,description);}
+    public void updateName(Long id, String name) throws Exception {this.productService.adjustName(id,name);}
 }

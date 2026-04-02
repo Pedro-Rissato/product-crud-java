@@ -11,7 +11,7 @@ public class Product {
     private String description;
     private BigDecimal discountPercentage = BigDecimal.ZERO;
 
-    // Construtores
+
     public Product(String name, Long id, BigDecimal price, Integer stock, String description) {
         this.name = name;
         this.id = id;
@@ -32,7 +32,7 @@ public class Product {
         this.discountPercentage = discountPercentage;
     }
 
-    //Getters
+
     public String getName() {
         return name;
     }
@@ -52,7 +52,7 @@ public class Product {
         return discountPercentage;
     }
 
-    // Setters
+
     public void setPrice(BigDecimal price) {
         if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
         throw new IllegalArgumentException("The price must be greater than zero.");
@@ -68,7 +68,6 @@ public class Product {
         }
         this.stock = quantity;
     }
-    public void setId(Long id){this.id = id;}
 
 
     public void setDiscountPercentage(BigDecimal discountPercentage) {
